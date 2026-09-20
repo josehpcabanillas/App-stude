@@ -1,0 +1,25 @@
+{
+  "name": "Stude · Prep UNTRM",
+  "short_name": "Stude Preu",
+  "description": "Preparación preuniversitaria inteligente para el examen de admisión UNTRM (Estomatología y Ciencias de la Salud)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"]
+}
