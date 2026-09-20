@@ -24,31 +24,36 @@ import { HeartRecoveryModal } from './features/recovery/HeartRecoveryModal';
 import { AcademicSearchModal } from './features/search/AcademicSearchModal';
 
 function AppContent() {
-  const { activeTab, activeModal, modalPayload, setActiveModal } = useApp();
+  const { activeTab, activeModal, modalPayload, setActiveModal, user } = useApp();
 
   return (
     <MobileShell>
       <InstallPromptBanner />
 
-      {/* Screen Views */}
-      <div className="flex-1 flex flex-col">
-        {activeTab === 'home' && <HomeScreen />}
-        {activeTab === 'path' && <PathScreen />}
-        {activeTab === 'simulations' && <SimulationHubScreen />}
-        {activeTab === 'training' && <TrainingHubScreen />}
-        {activeTab === 'profile' && <ProfileScreen />}
-      </div>
+      {/* Show Onboarding first if user has not completed onboarding */}
+      {!user.onboardingCompleted ? (
+        <OnboardingModal onClose={() => {}} />
+      ) : (
+        <>
+          {/* Screen Views */}
+          <div className="flex-1 flex flex-col">
+            {activeTab === 'home' && <HomeScreen />}
+            {activeTab === 'path' && <PathScreen />}
+            {activeTab === 'simulations' && <SimulationHubScreen />}
+            {activeTab === 'training' && <TrainingHubScreen />}
+            {activeTab === 'profile' && <ProfileScreen />}
+          </div>
 
-      {/* Bottom Navigation */}
-      <BottomNav />
+          {/* Bottom Navigation */}
+          <BottomNav />
 
-      {/* AI Tutor Bottom Sheet */}
-      <AITutorDrawer />
+          {/* AI Tutor Bottom Sheet */}
+          <AITutorDrawer />
 
-      {/* Modals & Full Screen Workflows */}
-      {activeModal === 'onboarding' && (
-        <OnboardingModal onClose={() => setActiveModal(null)} />
-      )}
+          {/* Modals & Full Screen Workflows */}
+          {activeModal === 'onboarding' && (
+            <OnboardingModal onClose={() => setActiveModal(null)} />
+          )}
 
       {activeModal === 'unitSelector' && (
         <UnitSelectorModal onClose={() => setActiveModal(null)} />
@@ -89,6 +94,8 @@ function AppContent() {
 
       {activeModal === 'search' && (
         <AcademicSearchModal onClose={() => setActiveModal(null)} />
+      )}
+        </>
       )}
     </MobileShell>
   );

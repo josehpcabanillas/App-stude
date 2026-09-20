@@ -28,10 +28,10 @@ export function OnboardingModal({ onClose }) {
 
   // Registration state
   const [regData, setRegData] = useState({
-    name: 'Andrea',
-    email: 'andrea.postula@gmail.com',
-    password: '••••••••',
-    whatsapp: '987654321',
+    name: '',
+    email: '',
+    password: '',
+    whatsapp: '',
   });
 
   const diagnosticQuestions = [

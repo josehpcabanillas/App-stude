@@ -7,34 +7,39 @@ import { SIMULATIONS } from '../data/simulationsData';
 
 const AppContext = createContext();
 
-const STORAGE_KEY = 'stude_preu_v1_state';
+const STORAGE_KEY = 'stude_preu_v3_state';
 
 export function AppProvider({ children }) {
   // Main User Profile
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY + '_user');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { }
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed.onboardingCompleted === 'boolean') {
+          return parsed;
+        }
+      } catch (e) { }
     }
     return {
-      name: 'Andrea',
-      email: 'andrea.postula@gmail.com',
-      whatsapp: '987654321',
+      name: '',
+      email: '',
+      whatsapp: '',
       university: 'UNTRM',
       career: 'Estomatología',
       area: 'Ciencias de la Salud',
       examDaysLeft: 84,
       dailyGoalMinutes: 20,
       avatar: 'owl',
-      xp: 420,
-      streak: 12,
+      xp: 0,
+      streak: 1,
       streakAtRisk: false,
-      hearts: 4,
+      hearts: 5,
       maxHearts: 5,
-      gems: 160,
-      rank: 'Aplicado',
-      level: 3,
-      onboardingCompleted: true, // true by default so user can test all tabs; can reset to test onboarding
+      gems: 100,
+      rank: 'Novato',
+      level: 1,
+      onboardingCompleted: false, // Default is false: mandatory onboarding for every new user!
     };
   });
 
@@ -82,9 +87,9 @@ export function AppProvider({ children }) {
     ]
   });
 
-  // Device Emulation Settings (For testing 390x844 mobile frame)
+  // Device Emulation Settings (For testing 390x844 mobile frame on desktop)
   const [viewportSettings, setViewportSettings] = useState({
-    isEmulating: true, // Show realistic phone frame on desktop
+    isEmulating: false, // Default to responsive so real mobile and desktop are clean
     width: 390, // 360, 390, 414, 430
     zoom: 100,
   });
@@ -225,8 +230,9 @@ export function AppProvider({ children }) {
     setAiTutor(prev => ({ ...prev, isOpen: false }));
   };
 
-  // Reset Onboarding (so reviewer can test it completely from Step 1)
+  // Reset Onboarding (so user or reviewer can test it completely from Step 1)
   const startOnboarding = () => {
+    setUser(prev => ({ ...prev, onboardingCompleted: false }));
     setActiveModal('onboarding');
     setModalPayload({ step: 1 });
   };
@@ -236,7 +242,11 @@ export function AppProvider({ children }) {
       ...prev,
       ...onboardingData,
       onboardingCompleted: true,
-      xp: prev.xp + 50, // Onboarding welcome reward
+      xp: 50, // Welcome reward
+      hearts: 5,
+      streak: 1,
+      rank: 'Novato',
+      level: 1,
     }));
     setActiveModal(null);
     setActiveTab('home');
